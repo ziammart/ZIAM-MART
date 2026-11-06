@@ -1,232 +1,1702 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090909">
-<title>ZIAM MART — Premium Online Shopping</title>
-<style>
-:root{--bg:#090909;--panel:#151515;--panel2:#1c1c1c;--gold:#d8b45b;--gold2:#f0d58b;--text:#f7f3e9;--muted:#aaa49a;--line:#39342a;--danger:#ff7777;--ok:#75d49a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif}
-button,input,select,textarea{font:inherit}button{cursor:pointer}
-header{position:sticky;top:0;z-index:5;background:#080808ed;border-bottom:1px solid #514326;backdrop-filter:blur(12px)}
-.top{max-width:1100px;margin:auto;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{font-size:21px;letter-spacing:2px;font-weight:900;color:var(--gold);text-decoration:none}.brand small{display:block;font-size:9px;letter-spacing:1.6px;color:#aaa;font-weight:500}
-nav{display:flex;gap:8px;flex-wrap:wrap}nav button,.ghost{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px 12px}
-.hero{max-width:1100px;margin:18px auto;padding:0 16px}.heroBox{border:1px solid #69552c;border-radius:16px;padding:36px 20px;text-align:center;background:radial-gradient(ellipse at top,#302515,#111 68%);box-shadow:0 12px 40px #0008}
-.hero h1{color:var(--gold2);font-size:clamp(27px,6vw,44px);margin:0 0 8px}.hero p{color:#c5bda9;margin:0 auto 17px;max-width:550px}
-.btn{border:0;border-radius:9px;padding:11px 16px;background:linear-gradient(135deg,#f0d58b,#bd923a);color:#16110a;font-weight:800}
-.btn.secondary{background:#29251d;color:var(--gold2);border:1px solid #65532e}.btn.danger{background:#512626;color:#fff}
-main{max-width:1100px;margin:0 auto;padding:0 16px 50px}.section{background:var(--panel);border:1px solid #302d27;border-radius:15px;padding:18px;margin:16px 0;box-shadow:0 8px 25px #0004}
-h2{font-size:22px;margin:0 0 15px;color:var(--gold2)}h3{font-size:17px;margin:0 0 9px}
-.muted{color:var(--muted)}.tiny{font-size:12px;color:var(--muted)}
-input,select,textarea{width:100%;background:#0d0d0d;border:1px solid #514b40;border-radius:9px;padding:12px;color:var(--text);outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--gold)}label{display:block;font-size:14px;margin:10px 0 6px;color:#e8dfcc}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px}
-.product{border:1px solid #40392c;border-radius:12px;overflow:hidden;background:#101010}.product img{width:100%;height:145px;object-fit:cover;background:#272727}.product .pad{padding:12px}.price{color:var(--gold2);font-weight:900}.product button{width:100%;margin-top:8px}
-.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.pill{font-size:11px;border:1px solid #68552e;color:var(--gold2);border-radius:20px;padding:4px 9px}
-.cartline{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #302d27}.cartline:last-child{border:0}
-.total{font-size:20px;color:var(--gold2);font-weight:900}.notice{padding:11px;border-radius:9px;background:#282113;border:1px solid #65532e;color:#e9d59e;font-size:13px;margin:10px 0}
-.hidden{display:none!important}.adminOrder{border:1px solid #39342a;border-radius:10px;padding:12px;margin:10px 0;background:#101010}
-footer{text-align:center;color:#8e877b;padding:25px;border-top:1px solid #2d2922;font-size:13px}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#262116;color:#f7e6b5;padding:12px 16px;border:1px solid #806a39;border-radius:10px;z-index:20;max-width:90%;display:none}
-@media(max-width:600px){.top{align-items:flex-start}.brand{font-size:18px}nav button{padding:7px 9px;font-size:12px}.section{padding:14px}.heroBox{padding:28px 14px}}
-</style>
-</head>
-<body>
-<header><div class="top">
-<a class="brand" href="#">✦ ZIAM MART<small>STYLE • QUALITY • CONVENIENCE</small></a>
-<nav><button onclick="scrollToId('products')">পণ্য</button><button onclick="scrollToId('checkout')">কার্ট <span id="cartCount">0</span></button><button onclick="scrollToId('admin')">অ্যাডমিন</button></nav>
-</div></header>
-<section class="hero"><div class="heroBox">
-<h1>Style. Quality. Convenience.</h1>
-<p>বিশ্বস্ত অনলাইন শপিং — পছন্দের পণ্য অর্ডার করুন সহজেই।</p>
-<button class="btn" onclick="scrollToId('products')">SHOP NOW</button>
-</div></section>
-<main>
-<section class="section" id="products">
-<div class="row"><h2 style="margin:0">Featured Products</h2><span class="pill">ZIAM MART</span></div>
-<div class="row" style="margin:12px 0"><input id="search" placeholder="পণ্য খুঁজুন..." oninput="renderProducts()"><select id="categoryFilter" onchange="renderProducts()" style="max-width:160px"><option value="">সব ক্যাটাগরি</option></select></div>
-<div id="productList" class="products"><p class="muted">পণ্য লোড হচ্ছে...</p></div>
-</section>
-
-<section class="section" id="checkout">
-<h2>Your Cart & Checkout</h2><div id="cartItems"><p class="muted">কার্ট খালি। পণ্য যোগ করুন।</p></div>
-<div class="cartline"><span>পণ্যের মোট</span><strong id="subtotal">৳0</strong></div>
-<h2 style="margin-top:20px">Delivery Information</h2>
-<div class="grid">
-<div><label>আপনার নাম *</label><input id="customerName" placeholder="সম্পূর্ণ নাম"></div>
-<div><label>মোবাইল নম্বর *</label><input id="customerPhone" placeholder="01XXXXXXXXX" inputmode="tel"></div>
-</div>
-<label>ডেলিভারি এলাকা *</label>
-<div class="row">
-<label style="display:flex;gap:8px;align-items:center"><input type="radio" name="zone" value="inside" checked style="width:auto" onchange="updateFees()"> লক্ষ্মীপুরের ভিতরে</label>
-<label style="display:flex;gap:8px;align-items:center"><input type="radio" name="zone" value="outside" style="width:auto" onchange="updateFees()"> লক্ষ্মীপুরের বাইরে</label>
-</div>
-<div class="grid">
-<div><label>বিভাগ *</label><select id="division" onchange="onDivision()"><option value="">বিভাগ নির্বাচন করুন</option></select></div>
-<div><label>জেলা *</label><select id="district" onchange="onDistrict()" disabled><option value="">জেলা নির্বাচন করুন</option></select></div>
-<div><label>উপজেলা / থানা *</label><select id="upazila" onchange="onUpazila()" disabled><option value="">উপজেলা নির্বাচন করুন</option></select></div>
-<div><label>ইউনিয়ন / পৌরসভা</label><select id="union" disabled><option value="">ইউনিয়ন / পৌরসভা নির্বাচন করুন</option></select></div>
-</div>
-<div class="grid">
-<div><label>গ্রাম / মহল্লা *</label><input id="village" placeholder="গ্রাম বা মহল্লার নাম"></div>
-<div><label>রোড / বাড়ি নম্বর</label><input id="road" placeholder="রোড, বাড়ি বা পরিচিত স্থান"></div>
-</div>
-<label>বিস্তারিত ঠিকানা *</label><textarea id="address" rows="2" placeholder="বাড়ি/রোড/এলাকার বিস্তারিত ঠিকানা"></textarea>
-<div class="notice">ডেলিভারি চার্জ আগে bKash-এ দিতে হবে। পণ্যের মূল্য কুরিয়ারে পণ্য হাতে পাওয়ার সময় দেবেন। অর্ডার নিশ্চিত করার আগে চার্জ ও ঠিকানা যাচাই করুন।</div>
-<div class="grid">
-<div><label>ডেলিভারি চার্জ</label><div class="total" id="deliveryFee">৳0</div></div>
-<div><label>সর্বমোট (পণ্য + ডেলিভারি)</label><div class="total" id="grandTotal">৳0</div></div>
-</div>
-<h2 style="margin-top:20px">Payment Method</h2>
-<label class="adminOrder"><input type="radio" name="payment" value="bkash" checked style="width:auto"> bKash — শুধু ডেলিভারি চার্জ অগ্রিম</label>
-<label class="adminOrder"><input type="radio" name="payment" value="cod" style="width:auto"> Cash on Delivery — (ডেলিভারি চার্জ অগ্রিম bKash-এ, পণ্যের দাম কুরিয়ারে)</label>
-<div class="grid">
-<div><label>bKash নম্বর</label><div id="bkashDisplay" class="notice">সেটআপের অপেক্ষায়</div></div>
-<div><label>bKash থেকে যে নম্বর দিয়ে পাঠিয়েছেন *</label><input id="bkashSender" placeholder="01XXXXXXXXX"></div>
-<div><label>bKash Transaction ID *</label><input id="trxId" placeholder="TrxID"></div>
-</div>
-<label>অতিরিক্ত নোট (ঐচ্ছিক)</label><textarea id="note" rows="2" placeholder="অর্ডার সম্পর্কে কিছু জানাতে চাইলে লিখুন"></textarea>
-<p class="tiny">অর্ডার পাঠানোর আগে bKash পেমেন্টের তথ্য ও ঠিকানা মিলিয়ে নিন।</p>
-<button class="btn" style="width:100%;margin-top:8px" onclick="placeOrder()">অর্ডার করুন — WhatsApp</button>
-<p class="tiny">অর্ডার Supabase-এ সংরক্ষণের চেষ্টা হবে এবং WhatsApp-এও পাঠানো হবে। Supabase সেটআপ না থাকলে WhatsApp-এ অর্ডার পাঠানো হবে।</p>
-</section>
-
-<section class="section" id="admin">
-<h2>Admin Panel</h2><p class="muted">অনুমোদিত Google অ্যাকাউন্ট দিয়ে লগইন করে পণ্য ও অর্ডার পরিচালনা করুন।</p>
-<div id="adminLoggedOut"><button class="btn" onclick="adminLogin()">Google দিয়ে লগইন</button></div>
-<div id="adminArea" class="hidden">
-<div class="row"><strong id="adminIdentity"></strong><button class="ghost" onclick="adminLogout()">লগআউট</button><button class="btn secondary" onclick="loadOrders()">অর্ডার রিফ্রেশ</button></div>
-<h3 style="margin-top:18px">নতুন পণ্য যোগ / সম্পাদনা</h3>
-<input type="hidden" id="editProductId">
-<label>পণ্যের নাম</label><input id="pName" placeholder="পণ্যের নাম">
-<div class="grid"><div><label>দাম (৳)</label><input id="pPrice" type="number" min="0" placeholder="500"></div><div><label>ক্যাটাগরি</label><input id="pCategory" placeholder="General"></div></div>
-<label>ছবির URL</label><input id="pImage" placeholder="https://...">
-<label>বিবরণ</label><textarea id="pDescription" rows="2"></textarea>
-<div class="row"><button class="btn" onclick="saveProduct()">পণ্য সংরক্ষণ</button><button class="ghost" onclick="clearProductForm()">ফর্ম পরিষ্কার</button></div>
-<h3 style="margin-top:22px">পণ্যের তালিকা</h3><div id="adminProducts" class="tiny">লগইন করে পণ্য দেখুন।</div>
-<h3 style="margin-top:22px">গ্রাহকের অর্ডার</h3><div id="ordersList"><p class="muted">অর্ডার দেখতে রিফ্রেশ করুন।</p></div>
-</div>
-<div id="setupWarning" class="notice">অ্যাডমিন লগইন ও অর্ডার সংরক্ষণের জন্য নিচের কোডে Supabase URL, Publishable/anon key এবং অনুমোদিত Admin email বসাতে হবে।</div>
-</section>
-</main>
-<footer>© <span id="year"></span> ZIAM MART · Premium Online Shopping</footer>
-<div id="toast"></div>
+<meta name="theme-color" content="#111111">
+<title>ZIAM MART</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --gold:#d6ad45;
+  --gold2:#f5d77e;
+  --black:#111;
+  --green:#16833d;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,"Noto Sans Bengali",sans-serif;
+  background:#faf8f1;
+  color:#222;
+  position:relative;
+}
+header{
+  background:linear-gradient(135deg,#111,#29200d);
+  color:white;
+  text-align:center;
+  padding:25px 12px;
+  border-bottom:5px solid var(--gold);
+}
+header h1{
+  color:var(--gold2);
+  margin:0;
+  font-size:32px;
+  letter-spacing:3px;
+}
+header p{margin:8px 0 0;color:#eee}
+nav{
+  background:#17130a;
+  padding:12px 5px;
+  text-align:center;
+  position:sticky;
+  top:0;
+  z-index:10;
+  border-bottom:2px solid var(--gold);
+}
+nav button{
+  background:transparent;
+  color:white;
+  border:1px solid transparent;
+  margin:3px;
+  padding:9px 12px;
+}
+nav button:hover{border-color:var(--gold);color:var(--gold2)}
+.container{max-width:1150px;margin:auto;padding:15px}
+h2{
+  border-left:5px solid var(--gold);
+  padding-left:12px;
+  color:#382b0c;
+}
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(165px,1fr));
+  gap:15px;
+}
+.product{
+  background:white;
+  border:1px solid #ead9a9;
+  border-radius:12px;
+  padding:12px;
+  box-shadow:0 3px 12px #8b6b1a15;
+}
+.product img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:9px;
+  background:#eee;
+}
+.product h3{font-size:16px;margin:10px 0 5px}
+.price{font-weight:bold;color:#a77b19;font-size:19px}
+.stock{font-size:13px;margin:7px 0;color:var(--green)}
+.low{color:#c47b00}
+.out{color:#d00}
+.stockbar{
+  height:6px;background:#eee;border-radius:10px;
+  overflow:hidden;margin:7px 0;
+}
+.stockbar span{display:block;height:100%;background:var(--gold)}
+button,.btn{
+  background:#17130a;
+  color:white;
+  border:0;
+  padding:10px 13px;
+  border-radius:7px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  font-size:14px;
+}
+button:hover,.btn:hover{background:var(--gold);color:#111}
+button:disabled{opacity:.5;cursor:not-allowed}
+.gold{
+  background:linear-gradient(135deg,#d6ad45,#f5d77e);
+  color:#17130a;
+  font-weight:bold;
+}
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin:6px 0 12px;
+  border:1px solid #d7c28a;
+  border-radius:7px;
+  font-size:15px;
+  background:white;
+}
+label{font-weight:bold;font-size:14px}
+.card{
+  background:white;
+  padding:17px;
+  border:1px solid #ead9a9;
+  border-radius:12px;
+  margin:15px 0;
+  box-shadow:0 2px 10px #0000000c;
+}
+.hidden{display:none!important}
+.cart-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  border-bottom:1px solid #eee;
+  padding:12px 0;
+}
+.qty{white-space:nowrap}
+.qty button{padding:5px 10px}
+.total{font-size:19px;font-weight:bold;color:#a77b19}
+.delivery-box{
+  background:#fff8e6;
+  border:1px solid #e3c36f;
+  padding:13px;
+  border-radius:9px;
+  margin:12px 0;
+}
+.notice{
+  padding:12px;
+  border-radius:9px;
+  background:#fff8e6;
+  border:1px solid #e7ca7b;
+  font-size:13px;
+  line-height:1.7;
+}
+.small{font-size:12px;color:#666;line-height:1.6}
+.pay-option{
+  display:block;
+  border:1px solid #e5d5aa;
+  border-radius:8px;
+  padding:13px;
+  margin:8px 0;
+  background:#fffdf7;
+}
+.pay-option input{width:auto;margin:0 8px 0 0}
+.action-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.action-row a{flex:1;text-align:center;min-width:130px}
+footer{
+  background:#17130a;
+  color:white;
+  text-align:center;
+  padding:22px;
+  margin-top:30px;
+  border-top:4px solid var(--gold);
+}
+footer h3{color:var(--gold2)}
+.success{
+  border:1px solid #b7dfc4;
+  background:#effaf2;
+  padding:16px;
+  border-radius:10px;
+  line-height:1.7;
+}
+.admin-panel{
+  background:#fff;
+  border:2px solid var(--gold);
+  padding:15px;
+  border-radius:12px;
+  margin:15px 0;
+}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th,.admin-table td{
+  border:1px solid #e8d9b3;
+  padding:8px;
+  text-align:left;
+}
+.admin-table th{background:#fff3cf}
+.admin-table button{margin:2px;padding:7px}
+.badge{
+  display:inline-block;
+  background:#fff1c5;
+  padding:5px 8px;
+  border-radius:5px;
+  font-size:12px;
+}
+
+/* পুরো ওয়েবসাইটের ওয়াটারমার্ক */
+body::after{
+  content:"ZIAM MART • আপনার পাশে আছে • ZIAM MART";
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  width:100%;
+  text-align:center;
+  font-size:clamp(20px,5vw,55px);
+  font-weight:bold;
+  color:#b38b35;
+  opacity:.045;
+  pointer-events:none;
+  z-index:5;
+  white-space:normal;
+  line-height:2;
+}
+
+/* সাপোর্ট বার্তা */
+.support-banner{
+  background:#fff5d9;
+  color:#49380c;
+  text-align:center;
+  padding:14px 10px;
+  border-top:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  font-weight:bold;
+  line-height:1.8;
+}
+.support-banner a{
+  color:#16833d;
+  text-decoration:none;
+}
+#whatsapp{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  background:#25D366;
+  color:white;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 3px 12px #0004;
+  z-index:999;
+  text-decoration:none;
+  font-size:28px;
+}
+@media(max-width:520px){
+  nav button{padding:8px;font-size:13px}
+  .container{padding:10px}
+  .product img{height:130px}
+  .admin-table{font-size:11px}
+  .admin-table th,.admin-table td{padding:5px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>ZIAM MART</h1>
+  <p>আপনার পছন্দের পণ্য, এখন এক জায়গায়</p>
+  <p style="color:#f5d77e;font-size:12px">
+    QUALITY • TRUST • SERVICE
+  </p>
+</header>
+
+<nav>
+  <button onclick="showSection('home')">হোম</button>
+  <button onclick="showSection('cartSection')">
+    কার্ট (<span id="cartCount">0</span>)
+  </button>
+  <button onclick="showSection('checkoutSection')">অর্ডার</button>
+  <button onclick="showSection('adminSection')">অ্যাডমিন</button>
+</nav>
+
+<main class="container">
+
+<!-- HOME -->
+<section id="home">
+  <h2>আমাদের পণ্য</h2>
+  <input id="search"
+    placeholder="পণ্যের নাম লিখে খুঁজুন..."
+    oninput="renderProducts()">
+  <div id="productList" class="products"></div>
+  <p id="storeMessage" class="small"></p>
+</section>
+
+<!-- CART -->
+<section id="cartSection" class="hidden">
+  <h2>আপনার শপিং কার্ট</h2>
+  <div class="card" id="cartItems"></div>
+  <button class="gold" onclick="showSection('checkoutSection')">
+    অর্ডার করতে এগিয়ে যান
+  </button>
+</section>
+
+<!-- CHECKOUT -->
+<section id="checkoutSection" class="hidden">
+  <h2>অর্ডার সম্পন্ন করুন</h2>
+
+  <div class="card">
+    <h3>আপনার পণ্যের বিবরণ</h3>
+    <div id="checkoutItems"></div>
+    <p>পণ্যের মোট মূল্য: <b id="subtotal">৳০</b></p>
+
+    <div class="delivery-box">
+      <b>ডেলিভারি চার্জ:
+        <span id="deliveryFee">জেলা নির্বাচন করুন</span>
+      </b>
+      <p id="deliveryNote" class="small">
+        জেলা নির্বাচন করলে চার্জ হিসাব হবে।
+      </p>
+      <p class="total">
+        সর্বমোট: <span id="grandTotal">৳০</span>
+      </p>
+      <p class="small">
+        ডেলিভারি চার্জ সিস্টেম নিজে হিসাব করে।
+        কাস্টমার এটি পরিবর্তন করতে পারবেন না।
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>কাস্টমারের তথ্য</h3>
+
+    <form id="orderForm">
+
+      <label>আপনার নাম</label>
+      <input id="customerName" required maxlength="80"
+        placeholder="আপনার নাম">
+
+      <label>মোবাইল নম্বর</label>
+      <input id="customerPhone" required type="tel"
+        pattern="01[3-9][0-9]{8}"
+        placeholder="01XXXXXXXXX">
+
+      <label>বিভাগ</label>
+      <select id="division" required>
+        <option value="">বিভাগ নির্বাচন করুন</option>
+      </select>
+
+      <label>জেলা</label>
+      <select id="district" required disabled>
+        <option value="">আগে বিভাগ নির্বাচন করুন</option>
+      </select>
+
+      <label>উপজেলা</label>
+      <select id="upazila" required disabled>
+        <option value="">আগে জেলা নির্বাচন করুন</option>
+      </select>
+
+      <label>ইউনিয়ন</label>
+      <select id="union" required disabled>
+        <option value="">আগে উপজেলা নির্বাচন করুন</option>
+      </select>
+
+      <label>বাড়ি/গ্রাম/রোড ও বিস্তারিত ঠিকানা</label>
+      <textarea id="fullAddress" required rows="3"
+        maxlength="500"
+        placeholder="সম্পূর্ণ ঠিকানা লিখুন"></textarea>
+
+      <h3>পেমেন্ট পদ্ধতি</h3>
+
+      <!-- BKASH -->
+      <label class="pay-option">
+        <input type="radio" name="paymentMethod"
+          value="bkash" checked>
+        বিকাশ — শুধু ডেলিভারি চার্জ অগ্রিম
+      </label>
+
+      <div id="bkashArea">
+        <div class="delivery-box">
+          <h3>বিকাশ পেমেন্ট</h3>
+          <p>
+            <b>বিকাশ নম্বর: 01776131624</b>
+          </p>
+          <p class="small">
+            শুধু ডেলিভারি চার্জ পাঠাবেন।
+            পণ্যের দাম ডেলিভারির সময় ক্যাশে দেবেন।
+          </p>
+          <p class="small">
+            পেমেন্ট না করলেও অর্ডার রিকোয়েস্ট পাঠাতে পারবেন।
+            তখন পেমেন্ট বাকি হিসেবে দেখাবে।
+          </p>
+        </div>
+
+        <label>বিকাশ প্রেরকের নম্বর (ঐচ্ছিক)</label>
+        <input id="bkashSender" inputmode="tel"
+          placeholder="01XXXXXXXXX">
+
+        <label>বিকাশ Transaction ID / TrxID (ঐচ্ছিক)</label>
+        <input id="trxId"
+          placeholder="TrxID না থাকলে ফাঁকা রাখুন">
+
+        <div class="notice">
+          <b>বিশেষ নির্দেশনা:</b><br>
+          TrxID অথবা বিকাশ নম্বর না দিলেও অর্ডার পাঠানো যাবে।
+          কোনো পেমেন্ট তথ্য না দিলে অ্যাডমিন প্যানেলে
+          <b>পেমেন্ট বাকি</b> দেখাবে।
+          TrxID দিলে <b>যাচাই বাকি</b> দেখাবে।
+          পেমেন্ট যাচাই না হওয়া পর্যন্ত Paid দেখাবে না।
+        </div>
+      </div>
+
+      <!-- COD -->
+      <label class="pay-option">
+        <input type="radio" name="paymentMethod"
+          value="cod">
+        ক্যাশ অন ডেলিভারি (COD)
+      </label>
+
+      <div id="contactArea" class="notice hidden">
+        <h3>ক্যাশ অন ডেলিভারি</h3>
+        <p>
+          পণ্য হাতে পাওয়ার পর পণ্যের মূল্য পরিশোধ করবেন।
+        </p>
+        <p>
+          COD অর্ডার নিশ্চিত করতে আমাদের WhatsApp-এ
+          যোগাযোগ করুন।
+        </p>
+        <p>
+          <b>WhatsApp নম্বর: 01822412757</b>
+        </p>
+        <div class="action-row">
+          <a class="btn"
+            href="https://wa.me/8801822412757"
+            target="_blank" rel="noopener">
+            WhatsApp-এ যোগাযোগ করুন
+          </a>
+        </div>
+      </div>
+
+      <button type="submit" class="gold"
+        style="width:100%;padding:15px;margin-top:14px">
+        অর্ডার রিকোয়েস্ট পাঠান
+      </button>
+
+      <p class="small">
+        অর্ডার পাঠালে তোমার WhatsApp-এ অর্ডারের সম্পূর্ণ
+        তথ্য তৈরি হবে। WhatsApp খুলে Send চাপতে হবে।
+      </p>
+
+    </form>
+  </div>
+</section>
+
+<!-- CONFIRMATION -->
+<section id="confirmationSection" class="hidden">
+  <h2>অর্ডার রিকোয়েস্ট</h2>
+
+  <div class="success">
+    <h3>ধন্যবাদ!</h3>
+    <p>
+      তোমার অর্ডার রিকোয়েস্ট তৈরি হয়েছে।
+    </p>
+    <p>
+      WhatsApp খুলে Send চাপলে অর্ডারের তথ্য
+      দোকানির কাছে পৌঁছাবে।
+    </p>
+    <p id="confirmationPayment"></p>
+    <p class="small">
+      বিকাশের টাকা যাচাই না হওয়া পর্যন্ত পেমেন্ট বাকি
+      অথবা যাচাই বাকি থাকবে।
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>প্রয়োজনে SMS</h3>
+    <div class="action-row">
+      <a class="btn" id="adminSms" href="#">দোকানিকে SMS</a>
+      <a class="btn" id="customerSms" href="#">কাস্টমারকে SMS</a>
+    </div>
+  </div>
+
+  <button class="gold" onclick="showSection('home')">
+    আবার কেনাকাটা করুন
+  </button>
+</section>
+
+<!-- ADMIN -->
+<section id="adminSection" class="hidden">
+  <h2>ZIAM MART Admin Panel</h2>
+
+  <div class="admin-panel" id="adminLoginBox">
+    <h3>অ্যাডমিন লগইন</h3>
+    <p class="small">
+      শুধু অনুমোদিত অ্যাডমিন লগইন করতে পারবেন।
+    </p>
+
+    <label>Admin Email</label>
+    <input id="adminEmail" type="email"
+      placeholder="Admin email">
+
+    <label>Password</label>
+    <input id="adminPassword" type="password"
+      placeholder="Password">
+
+    <button class="gold" onclick="adminLogin()">
+      লগইন করুন
+    </button>
+    <p id="loginMessage" class="small"></p>
+  </div>
+
+  <div id="adminDashboard" class="hidden">
+
+    <div class="card">
+      <h3>অ্যাডমিন ড্যাশবোর্ড</h3>
+      <p>লগইন করা অ্যাডমিন:
+        <b id="adminIdentity"></b>
+      </p>
+      <button onclick="adminLogout()">লগআউট</button>
+    </div>
+
+    <div class="card">
+      <h3>নতুন পণ্য যোগ করুন</h3>
+
+      <label>পণ্যের নাম</label>
+      <input id="newProductName" placeholder="পণ্যের নাম">
+
+      <label>দাম</label>
+      <input id="newProductPrice" type="number"
+        min="0" placeholder="দাম">
+
+      <label>স্টক</label>
+      <input id="newProductStock" type="number"
+        min="0" placeholder="স্টক">
+
+      <label>ছবির URL</label>
+      <input id="newProductImage"
+        placeholder="https://...">
+
+      <label>ক্যাটাগরি</label>
+      <input id="newProductCategory"
+        placeholder="যেমন: Gadgets">
+
+      <label>বিবরণ</label>
+      <textarea id="newProductDescription" rows="2"></textarea>
+
+      <button class="gold" onclick="addProduct()">
+        পণ্য যোগ করুন
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>পণ্য পরিচালনা</h3>
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>পণ্য</th>
+              <th>দাম</th>
+              <th>স্টক</th>
+              <th>অ্যাকশন</th>
+            </tr>
+          </thead>
+          <tbody id="adminProductList"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>কাস্টমার অর্ডার</h3>
+      <button class="gold" onclick="loadAdminOrders()">
+        অর্ডার রিফ্রেশ করুন
+      </button>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>অর্ডার</th>
+              <th>কাস্টমার</th>
+              <th>মোট</th>
+              <th>পেমেন্ট</th>
+              <th>অর্ডার স্ট্যাটাস</th>
+              <th>আপডেট</th>
+            </tr>
+          </thead>
+          <tbody id="adminOrderList"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- SUPPORT WATERMARK MESSAGE -->
+<div class="support-banner">
+  কোনো সমস্যা হলে WhatsApp-এ যোগাযোগ করুন।<br>
+  <b>হ্যাঁ, ZIAM MART আপনার পাশে আছে।</b><br>
+  <a href="https://wa.me/8801822412757"
+    target="_blank" rel="noopener">
+    WhatsApp: 01822412757
+  </a>
+</div>
+
+<footer>
+  <h3>ZIAM MART</h3>
+  <p>ধন্যবাদ আমাদের সাথে থাকার জন্য</p>
+  <p>© ZIAM MART</p>
+  <p class="small">QUALITY • TRUST • SERVICE</p>
+  <p>কোনো সমস্যা হলে WhatsApp-এ যোগাযোগ করুন।</p>
+  <b style="color:#f5d77e">
+    ZIAM MART আপনার পাশে আছে।
+  </b>
+</footer>
+
+<a id="whatsapp"
+  href="https://wa.me/8801822412757"
+  target="_blank" rel="noopener"
+  aria-label="WhatsApp">☏</a>
+
 <script>
-// ===================== ZIAM MART CONFIG =====================
-// নিজের Supabase Project URL ও anon/publishable key বসান। service_role/secret key কখনো এখানে দেবেন না।
-const CONFIG = {
-  SUPABASE_URL: "PASTE_SUPABASE_PROJECT_URL_HERE",
-  SUPABASE_ANON_KEY: "PASTE_SUPABASE_ANON_OR_PUBLISHABLE_KEY_HERE",
-  ADMIN_EMAILS: ["YOUR_ADMIN_GMAIL@gmail.com"],
-  WHATSAPP_NUMBER: "8801822412757", // 880 সহ, + চিহ্ন ছাড়া
-  BKASH_NUMBER: "01776131624",
-  DELIVERY_INSIDE_LAKSHMIPUR: 70,  // লক্ষ্মীপুর জেলার ভেতরে
-  DELIVERY_OUTSIDE_LAKSHMIPUR: 120 // লক্ষ্মীপুর জেলার বাইরে
-};
-// ============================================================
-const GEO_URL="https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
-let supabase=null, geo=[], products=[], cart=[], session=null;
-const money=n=>"৳"+Number(n||0).toLocaleString("en-US");
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function toast(s){const t=$("toast");t.textContent=s;t.style.display="block";setTimeout(()=>t.style.display="none",3200)}
-function scrollToId(id){$(id).scrollIntoView({behavior:"smooth"})}
-function zone(){return document.querySelector('input[name="zone"]:checked')?.value||"inside"}
-function fee(){return zone()==="inside"?Number(CONFIG.DELIVERY_INSIDE_LAKSHMIPUR):Number(CONFIG.DELIVERY_OUTSIDE_LAKSHMIPUR)}
-function subtotal(){return cart.reduce((s,x)=>s+x.price*x.qty,0)}
-function updateFees(){$("deliveryFee").textContent=money(fee());$("grandTotal").textContent=money(subtotal()+fee())}
-function renderCart(){
- const box=$("cartItems");$("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0);
- if(!cart.length)box.innerHTML='<p class="muted">কার্ট খালি। পণ্য যোগ করুন।</p>';
- else box.innerHTML=cart.map((x,i)=>`<div class="cartline"><div><b>${esc(x.name)}</b><div class="tiny">${money(x.price)} × ${x.qty}</div></div><div class="row" style="flex:0 0 auto"><button class="ghost" onclick="qty(${i},-1)">−</button><b>${x.qty}</b><button class="ghost" onclick="qty(${i},1)">+</button><button class="ghost" onclick="removeCart(${i})">×</button></div></div>`).join("");
- $("subtotal").textContent=money(subtotal());updateFees()
+// ============================================
+// SUPABASE CONFIGURATION
+// ============================================
+
+const SUPABASE_URL = "SUPABASE_URL_HERE";
+const SUPABASE_ANON_KEY = "SUPABASE_ANON_KEY_HERE";
+
+const WHATSAPP_NUMBER = "8801822412757";
+const BKASH_NUMBER = "01776131624";
+const SHOP_SMS_NUMBER = "01776131624";
+
+const DELIVERY_LAKSHMIPUR = 70;
+const DELIVERY_OTHER = 120;
+
+let db = null;
+
+if(
+  window.supabase &&
+  SUPABASE_URL !== "SUPABASE_URL_HERE" &&
+  SUPABASE_ANON_KEY !== "SUPABASE_ANON_KEY_HERE"
+){
+  db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 }
-function qty(i,n){cart[i].qty+=n;if(cart[i].qty<1)cart.splice(i,1);renderCart()}
-function removeCart(i){cart.splice(i,1);renderCart()}
-function addCart(p){let x=cart.find(x=>x.id===p.id);if(x)x.qty++;else cart.push({...p,qty:1});renderCart();toast("কার্টে পণ্য যোগ হয়েছে")}
-function renderProducts(){
- const q=$("search").value.toLowerCase(),cat=$("categoryFilter").value;
- const list=products.filter(p=>(!cat||p.category===cat)&&(!q||(p.name+" "+(p.description||"")).toLowerCase().includes(q)));
- $("productList").innerHTML=list.length?list.map(p=>`<article class="product"><img src="${esc(p.image_url||"https://placehold.co/600x400/222/dfc477?text=ZIAM+MART")}" alt="${esc(p.name)}" onerror="this.src='https://placehold.co/600x400/222/dfc477?text=ZIAM+MART'"><div class="pad"><b>${esc(p.name)}</b><p class="tiny">${esc(p.description||"")}</p><div class="price">${money(p.price)}</div><button class="btn" onclick='addCart(${JSON.stringify({id:p.id,name:p.name,price:Number(p.price),image_url:p.image_url||"",category:p.category||""}).replace(/'/g,"&#39;")})'>কার্টে যোগ করুন</button><button class="btn secondary" onclick='addCart(${JSON.stringify({id:p.id,name:p.name,price:Number(p.price),image_url:p.image_url||"",category:p.category||""}).replace(/'/g,"&#39;")});scrollToId("checkout")'>এখনই কিনুন</button></div></article>`).join(""):'<p class="muted">এখনো কোনো পণ্য যোগ করা হয়নি। অ্যাডমিন প্যানেল থেকে পণ্য যোগ করুন।</p>';
+
+let products = [];
+let cart = [];
+let geoData = [];
+let selectedDeliveryFee = 0;
+let currentAdmin = null;
+
+const byId = id => document.getElementById(id);
+
+const money = n =>
+  "৳" + Number(n || 0).toLocaleString("en-BD");
+
+const safe = value => String(value ?? "").replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+}[c]));
+
+function showSection(id){
+  [
+    "home",
+    "cartSection",
+    "checkoutSection",
+    "confirmationSection",
+    "adminSection"
+  ].forEach(s=>{
+    byId(s).classList.toggle("hidden",s!==id);
+  });
+
+  if(id==="cartSection")renderCart();
+  if(id==="checkoutSection")updateCheckout();
+  if(id==="adminSection")checkAdminSession();
+
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-function updateCategories(){let cats=[...new Set(products.map(p=>p.category).filter(Boolean))];$("categoryFilter").innerHTML='<option value="">সব ক্যাটাগরি</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join("")}
+
+// ============================================
+// PRODUCTS
+// ============================================
+
 async function loadProducts(){
- if(supabase){const {data,error}=await supabase.from("products").select("*").eq("active",true).order("created_at",{ascending:false});if(!error&&data)products=data}
- if(!products.length)products=[{id:"demo1",name:"Sample Product One",price:500,category:"General",description:"ডেমো পণ্য — অ্যাডমিন থেকে নিজের পণ্য যোগ করুন।",image_url:""}];
- updateCategories();renderProducts()
+
+  if(!db){
+    byId("storeMessage").textContent =
+      "Supabase সংযোগ দেওয়া হয়নি। ডাটাবেস চালু করতে URL ও anon key বসান।";
+    products=[];
+    renderProducts();
+    return;
+  }
+
+  const {data,error}=await db
+    .from("products")
+    .select("*")
+    .eq("active",true)
+    .order("id",{ascending:true});
+
+  if(error){
+    console.error(error);
+    byId("storeMessage").textContent =
+      "পণ্য লোড করা যায়নি। Supabase সেটিংস পরীক্ষা করুন।";
+    return;
+  }
+
+  products=data||[];
+  renderProducts();
 }
-// Location dataset: divisions → districts → upazilas → unions/pourashavas
-async function loadGeo(){
- try{const r=await fetch(GEO_URL);if(!r.ok)throw Error("location data");geo=await r.json();$("division").innerHTML='<option value="">বিভাগ নির্বাচন করুন</option>'+geo.map((d,i)=>`<option value="${i}">${esc(d.bn_name||d.name)}</option>`).join("")}
- catch(e){$("division").innerHTML='<option value="">লোকেশন তালিকা লোড হয়নি — পরে আবার চেষ্টা করুন</option>';toast("এলাকার তালিকা আনতে ইন্টারনেট সংযোগ পরীক্ষা করুন")}
+
+function renderProducts(){
+
+  const search=byId("search").value.toLowerCase().trim();
+
+  const filtered=products.filter(p=>
+    String(p.name).toLowerCase().includes(search)
+  );
+
+  const list=byId("productList");
+
+  if(!filtered.length){
+    list.innerHTML="<p>কোনো পণ্য পাওয়া যায়নি।</p>";
+    return;
+  }
+
+  list.innerHTML="";
+
+  filtered.forEach(p=>{
+
+    const percent=Math.min(100,(Number(p.stock)/20)*100);
+
+    const stockText=Number(p.stock)===0
+      ?'<span class="out">স্টক শেষ</span>'
+      :Number(p.stock)<=5
+      ?`<span class="low">মাত্র ${p.stock}টি বাকি!</span>`
+      :`<span>স্টকে আছে: ${p.stock}টি</span>`;
+
+    list.insertAdjacentHTML("beforeend",`
+      <div class="product">
+        <img src="${safe(p.image||"")}"
+          alt="${safe(p.name)}"
+          onerror="this.src='https://placehold.co/400x300?text=ZIAM+MART'">
+
+        <h3>${safe(p.name)}</h3>
+        <div class="price">${money(p.price)}</div>
+        <div class="stock">${stockText}</div>
+
+        <div class="stockbar">
+          <span style="width:${percent}%"></span>
+        </div>
+
+        <button ${Number(p.stock)<=0?"disabled":""}
+          onclick="addToCart(${Number(p.id)})">
+          কার্টে যোগ করুন
+        </button>
+
+        <button class="gold"
+          ${Number(p.stock)<=0?"disabled":""}
+          onclick="buyNow(${Number(p.id)})">
+          এখনই কিনুন
+        </button>
+      </div>
+    `);
+  });
 }
-function onDivision(){let d=geo[+$("division").value];$("district").innerHTML='<option value="">জেলা নির্বাচন করুন</option>'+(d?.districts||[]).map((x,i)=>`<option value="${i}">${esc(x.bn_name||x.name)}</option>`).join("");$("district").disabled=!d;$("upazila").innerHTML='<option value="">উপজেলা নির্বাচন করুন</option>';$("upazila").disabled=true;$("union").innerHTML='<option value="">ইউনিয়ন / পৌরসভা নির্বাচন করুন</option>';$("union").disabled=true}
-function onDistrict(){let d=geo[+$("division").value]?.districts?.[+$("district").value];$("upazila").innerHTML='<option value="">উপজেলা নির্বাচন করুন</option>'+(d?.upazilas||[]).map((x,i)=>`<option value="${i}">${esc(x.bn_name||x.name)}</option>`).join("");$("upazila").disabled=!d;$("union").innerHTML='<option value="">ইউনিয়ন / পৌরসভা নির্বাচন করুন</option>';$("union").disabled=true}
-function onUpazila(){let u=geo[+$("division").value]?.districts?.[+$("district").value]?.upazilas?.[+$("upazila").value];let arr=[...(u?.unions||[]).map(x=>({...x,type:"ইউনিয়ন"})),...(u?.pourashavas||[]).map(x=>({...x,type:"পৌরসভা"}))];$("union").innerHTML='<option value="">ইউনিয়ন / পৌরসভা নির্বাচন করুন</option>'+arr.map(x=>`<option>${esc((x.bn_name||x.name)+" ("+x.type+")")}</option>`).join("");$("union").disabled=!arr.length}
-function selectedLocation(){let d=geo[+$("division").value],z=d?.districts?.[+$("district").value],u=z?.upazilas?.[+$("upazila").value];return {division:d?.bn_name||d?.name||"",district:z?.bn_name||z?.name||"",upazila:u?.bn_name||u?.name||"",union:$("union").value}}
-function addressData(){return {name:$("customerName").value.trim(),phone:$("customerPhone").value.trim(),zone:zone()==="inside"?"লক্ষ্মীপুরের ভিতরে":"লক্ষ্মীপুরের বাইরে",...selectedLocation(),village:$("village").value.trim(),road:$("road").value.trim(),address:$("address").value.trim()}}
-async function placeOrder(){
- if(!cart.length)return toast("প্রথমে কার্টে পণ্য যোগ করুন");
- const a=addressData(),sender=$("bkashSender").value.trim(),trx=$("trxId").value.trim();
- if(!a.name||!/^01[3-9]\d{8}$/.test(a.phone)||!a.division||!a.district||!a.upazila||!a.village||!a.address)return toast("সব আবশ্যক তথ্য সঠিকভাবে পূরণ করুন");
- if(!sender||!trx)return toast("bKash নম্বর ও Transaction ID দিন");
- if(fee()<=0)return toast("প্রশাসককে আগে ডেলিভারি চার্জ সেট করতে হবে।");
- const order={customer_name:a.name,customer_phone:a.phone,delivery_zone:a.zone,division:a.division,district:a.district,upazila:a.upazila,union_name:a.union,village:a.village,road:a.road,full_address:a.address,items:cart.map(x=>({id:x.id,name:x.name,price:x.price,qty:x.qty})),subtotal:subtotal(),delivery_fee:fee(),total:subtotal()+fee(),advance_due:fee(),product_due:subtotal(),payment_method:document.querySelector('input[name="payment"]:checked').value,bkash_sender:sender,bkash_trxid:trx,note:$("note").value.trim(),status:"নতুন",created_at:new Date().toISOString()};
- let saved=false;
- if(supabase){const {error}=await supabase.from("orders").insert(order);if(!error)saved=true;else console.error(error)}
- const lines=order.items.map(x=>`• ${x.name} × ${x.qty} — ${money(x.price*x.qty)}`).join("\n");
- const msg=`ZIAM MART — নতুন অর্ডার\nনাম: ${a.name}\nমোবাইল: ${a.phone}\nএলাকা: ${a.zone}\nঠিকানা: ${a.division}, ${a.district}, ${a.upazila}, ${a.union}, ${a.village}, ${a.road}, ${a.address}\n\nপণ্য:\n${lines}\n\nপণ্যের মূল্য: ${money(order.subtotal)}\nঅগ্রিম ডেলিভারি চার্জ: ${money(order.delivery_fee)}\nসর্বমোট: ${money(order.total)}\nকুরিয়ারে পণ্যের মূল্য: ${money(order.product_due)}\nbKash প্রেরক: ${sender}\nTrxID: ${trx}\nনোট: ${order.note}\nSupabase-এ সংরক্ষিত: ${saved?"হ্যাঁ":"না — WhatsApp-এ এসেছে"}`;
- const wa=CONFIG.WHATSAPP_NUMBER.replace(/\D/g,"");
- if(!wa||wa.includes("XXXXXXXX"))return toast("কোডে আপনার WhatsApp নম্বর বসান");
- window.open("https://wa.me/"+wa+"?text="+encodeURIComponent(msg),"_blank");
- if(saved)toast("অর্ডার Supabase-এ সংরক্ষিত হয়েছে। WhatsApp-এ পাঠানোও খুলেছে।");else toast("WhatsApp অর্ডার খুলেছে। Supabase সেটআপ না থাকায় অ্যাডমিন তালিকায় সংরক্ষিত হয়নি।");
+
+function addToCart(id){
+
+  const p=products.find(x=>Number(x.id)===Number(id));
+
+  if(!p||Number(p.stock)<=0)
+    return alert("পণ্যটি স্টকে নেই।");
+
+  const item=cart.find(x=>Number(x.id)===Number(id));
+
+  if(item){
+    if(item.qty>=Number(p.stock))
+      return alert("এই পণ্যের আর স্টক নেই।");
+    item.qty++;
+  }else{
+    cart.push({id:p.id,qty:1});
+  }
+
+  updateCartCount();
+  alert("পণ্যটি কার্টে যোগ হয়েছে।");
 }
-function configured(){return supabase!==null}
-async function adminLogin(){if(!configured())return toast("আগে Supabase URL ও key বসান");const {error}=await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.href}});if(error)toast(error.message)}
-async function adminLogout(){await supabase.auth.signOut();session=null;showAdmin()}
-function showAdmin(){
- const email=session?.user?.email||"",allowed=CONFIG.ADMIN_EMAILS.map(x=>x.toLowerCase()).includes(email.toLowerCase());
- $("adminLoggedOut").classList.toggle("hidden",!!session);$("adminArea").classList.toggle("hidden",!(session&&allowed));
- $("setupWarning").classList.toggle("hidden",!!(session&&allowed));
- if(session&&!allowed)toast("এই Google অ্যাকাউন্টটি Admin হিসেবে অনুমোদিত নয়");
- if(session&&allowed){$("adminIdentity").textContent=email;loadOrders();loadAdminProducts()}
+
+function buyNow(id){
+
+  const p=products.find(x=>Number(x.id)===Number(id));
+
+  if(!p||Number(p.stock)<=0)
+    return alert("পণ্যটি স্টকে নেই।");
+
+  cart=[{id:p.id,qty:1}];
+  updateCartCount();
+  showSection("checkoutSection");
 }
-async function saveProduct(){
- if(!session)return toast("প্রথমে Admin লগইন করুন");
- const id=$("editProductId").value,p={name:$("pName").value.trim(),price:Number($("pPrice").value),category:$("pCategory").value.trim()||"General",image_url:$("pImage").value.trim(),description:$("pDescription").value.trim(),active:true};
- if(!p.name||!Number.isFinite(p.price)||p.price<0)return toast("পণ্যের নাম ও সঠিক দাম দিন");
- let q=id?supabase.from("products").update(p).eq("id",id):supabase.from("products").insert(p);
- const {error}=await q;if(error)return toast("পণ্য সংরক্ষণ হয়নি: "+error.message);
- clearProductForm();await loadProducts();loadAdminProducts();toast("পণ্য সংরক্ষণ হয়েছে")
+
+function updateCartCount(){
+  byId("cartCount").textContent=
+    cart.reduce((a,b)=>a+b.qty,0);
 }
-function clearProductForm(){["editProductId","pName","pPrice","pCategory","pImage","pDescription"].forEach(x=>$(x).value="")}
+
+function getSubtotal(){
+  return cart.reduce((sum,item)=>{
+    const p=products.find(x=>Number(x.id)===Number(item.id));
+    return sum+(p?Number(p.price)*item.qty:0);
+  },0);
+}
+
+function renderCart(){
+
+  const box=byId("cartItems");
+
+  if(!cart.length){
+    box.innerHTML="<p>আপনার কার্ট খালি।</p>";
+    return;
+  }
+
+  box.innerHTML=cart.map(item=>{
+
+    const p=products.find(x=>Number(x.id)===Number(item.id));
+    if(!p)return "";
+
+    return `
+      <div class="cart-row">
+        <div>
+          <b>${safe(p.name)}</b><br>
+          ${money(p.price)} × ${item.qty}
+        </div>
+        <div class="qty">
+          <button onclick="changeQty(${Number(p.id)},-1)">−</button>
+          ${item.qty}
+          <button onclick="changeQty(${Number(p.id)},1)">+</button>
+          <button onclick="removeItem(${Number(p.id)})">✕</button>
+        </div>
+      </div>
+    `;
+  }).join("")+
+  `<p class="total">মোট: ${money(getSubtotal())}</p>`;
+}
+
+function changeQty(id,change){
+
+  const item=cart.find(x=>Number(x.id)===Number(id));
+  const p=products.find(x=>Number(x.id)===Number(id));
+
+  if(!item||!p)return;
+
+  if(item.qty+change<=0)return removeItem(id);
+
+  if(item.qty+change>Number(p.stock))
+    return alert("স্টকের চেয়ে বেশি নেওয়া যাবে না।");
+
+  item.qty+=change;
+  updateCartCount();
+  renderCart();
+}
+
+function removeItem(id){
+  cart=cart.filter(x=>Number(x.id)!==Number(id));
+  updateCartCount();
+  renderCart();
+}
+
+// ============================================
+// LOCATION AND DELIVERY
+// ============================================
+
+async function loadLocations(){
+
+  try{
+    const response=await fetch(
+      "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json"
+    );
+
+    if(!response.ok)throw new Error("Location error");
+
+    geoData=await response.json();
+
+    byId("division").innerHTML=
+      '<option value="">বিভাগ নির্বাচন করুন</option>';
+
+    geoData.forEach((d,i)=>{
+      byId("division").insertAdjacentHTML(
+        "beforeend",
+        `<option value="${i}">${safe(d.bn_name)} (${safe(d.name)})</option>`
+      );
+    });
+
+    byId("division").disabled=false;
+
+  }catch(error){
+    console.error(error);
+    alert("ঠিকানার তালিকা লোড হয়নি। ইন্টারনেট পরীক্ষা করুন।");
+  }
+}
+
+byId("division").addEventListener("change",function(){
+
+  const district=byId("district");
+  const upazila=byId("upazila");
+  const union=byId("union");
+
+  district.innerHTML='<option value="">জেলা নির্বাচন করুন</option>';
+  upazila.innerHTML='<option value="">আগে জেলা নির্বাচন করুন</option>';
+  union.innerHTML='<option value="">আগে উপজেলা নির্বাচন করুন</option>';
+
+  upazila.disabled=true;
+  union.disabled=true;
+
+  const d=geoData[Number(this.value)];
+
+  if(!d){
+    district.disabled=true;
+    updateDelivery();
+    return;
+  }
+
+  (d.districts||[]).forEach(x=>{
+    district.insertAdjacentHTML(
+      "beforeend",
+      `<option value="${safe(x.name)}">${safe(x.bn_name)} (${safe(x.name)})</option>`
+    );
+  });
+
+  district.disabled=false;
+  updateDelivery();
+});
+
+byId("district").addEventListener("change",function(){
+
+  const upazila=byId("upazila");
+  const union=byId("union");
+
+  upazila.innerHTML='<option value="">উপজেলা নির্বাচন করুন</option>';
+  union.innerHTML='<option value="">আগে উপজেলা নির্বাচন করুন</option>';
+  union.disabled=true;
+
+  const div=geoData[Number(byId("division").value)];
+  const dist=div?.districts.find(d=>d.name===this.value);
+
+  if(!dist){
+    upazila.disabled=true;
+    updateDelivery();
+    return;
+  }
+
+  (dist.upazilas||[]).forEach((u,i)=>{
+    upazila.insertAdjacentHTML(
+      "beforeend",
+      `<option value="${i}">${safe(u.bn_name)} (${safe(u.name)})</option>`
+    );
+  });
+
+  upazila.disabled=false;
+  updateDelivery();
+});
+
+byId("upazila").addEventListener("change",function(){
+
+  const union=byId("union");
+  union.innerHTML='<option value="">ইউনিয়ন নির্বাচন করুন</option>';
+
+  const div=geoData[Number(byId("division").value)];
+  const dist=div?.districts.find(
+    d=>d.name===byId("district").value
+  );
+
+  const upa=dist?.upazilas[Number(this.value)];
+  const unions=upa?.unions||[];
+
+  unions.forEach(u=>{
+    union.insertAdjacentHTML(
+      "beforeend",
+      `<option value="${safe(u.name)}">${safe(u.bn_name)} (${safe(u.name)})</option>`
+    );
+  });
+
+  if(!unions.length){
+    union.innerHTML=
+      '<option value="">এই উপজেলায় ইউনিয়নের তালিকা পাওয়া যায়নি</option>';
+    union.disabled=true;
+  }else{
+    union.disabled=false;
+  }
+});
+
+function updateDelivery(){
+
+  const district=byId("district").value;
+
+  if(!district){
+    selectedDeliveryFee=0;
+    byId("deliveryFee").textContent="জেলা নির্বাচন করুন";
+    byId("deliveryNote").textContent="জেলা নির্বাচন করলে চার্জ হিসাব হবে।";
+  }else if(district.toLowerCase()==="lakshmipur"){
+    selectedDeliveryFee=DELIVERY_LAKSHMIPUR;
+    byId("deliveryFee").textContent=money(DELIVERY_LAKSHMIPUR);
+    byId("deliveryNote").textContent=
+      "লক্ষ্মীপুর জেলার ডেলিভারি চার্জ";
+  }else{
+    selectedDeliveryFee=DELIVERY_OTHER;
+    byId("deliveryFee").textContent=money(DELIVERY_OTHER);
+    byId("deliveryNote").textContent=
+      "লক্ষ্মীপুরের বাইরের জেলার ডেলিভারি চার্জ";
+  }
+
+  byId("grandTotal").textContent=
+    money(getSubtotal()+selectedDeliveryFee);
+}
+
+function updateCheckout(){
+
+  byId("checkoutItems").innerHTML=cart.length
+    ?cart.map(item=>{
+      const p=products.find(x=>Number(x.id)===Number(item.id));
+      return p
+        ?`<p>${safe(p.name)} × ${item.qty} — ${money(p.price*item.qty)}</p>`
+        :"";
+    }).join("")
+    :"<p>কার্ট খালি। আগে পণ্য যোগ করুন।</p>";
+
+  byId("subtotal").textContent=money(getSubtotal());
+  updateDelivery();
+}
+
+// ============================================
+// PAYMENT METHOD
+// ============================================
+
+document.querySelectorAll(
+  'input[name="paymentMethod"]'
+).forEach(r=>{
+  r.addEventListener("change",()=>{
+
+    const method=document.querySelector(
+      'input[name="paymentMethod"]:checked'
+    ).value;
+
+    const bkash=method==="bkash";
+
+    byId("bkashArea").classList.toggle("hidden",!bkash);
+    byId("contactArea").classList.toggle("hidden",bkash);
+  });
+});
+
+// ============================================
+// CUSTOMER ORDER
+// ============================================
+
+byId("orderForm").addEventListener("submit",async function(e){
+
+  e.preventDefault();
+
+  if(!cart.length)
+    return alert("আপনার কার্টে কোনো পণ্য নেই।");
+
+  if(
+    !byId("division").value||
+    !byId("district").value||
+    !byId("upazila").value||
+    !byId("union").value
+  ){
+    return alert("বিভাগ, জেলা, উপজেলা ও ইউনিয়ন নির্বাচন করুন।");
+  }
+
+  if(selectedDeliveryFee<=0)
+    return alert("ডেলিভারি চার্জ হিসাব করা যায়নি।");
+
+  // স্টক যাচাই
+  for(const item of cart){
+    const p=products.find(x=>Number(x.id)===Number(item.id));
+
+    if(!p||Number(p.stock)<item.qty){
+      return alert("একটি পণ্যের স্টক পরিবর্তিত হয়েছে।");
+    }
+  }
+
+  const method=document.querySelector(
+    'input[name="paymentMethod"]:checked'
+  ).value;
+
+  const name=byId("customerName").value.trim();
+  const phone=byId("customerPhone").value.trim();
+
+  const division=byId("division").selectedOptions[0].text;
+  const district=byId("district").selectedOptions[0].text;
+  const upazila=byId("upazila").selectedOptions[0].text;
+  const union=byId("union").selectedOptions[0].text;
+  const address=byId("fullAddress").value.trim();
+
+  const sender=method==="bkash"
+    ?byId("bkashSender").value.trim():"";
+
+  const trx=method==="bkash"
+    ?byId("trxId").value.trim():"";
+
+  const subtotal=getSubtotal();
+  const deliveryFee=selectedDeliveryFee;
+  const total=subtotal+deliveryFee;
+
+  const orderItems=cart.map(item=>{
+    const p=products.find(x=>Number(x.id)===Number(item.id));
+
+    return {
+      product_id:p.id,
+      name:p.name,
+      price:Number(p.price),
+      quantity:item.qty,
+      line_total:Number(p.price)*item.qty
+    };
+  });
+
+  // পেমেন্ট স্ট্যাটাস
+  let paymentStatus="pending";
+  let paymentText="পেমেন্ট বাকি — টাকা পরিশোধ করা হয়নি";
+
+  if(method==="bkash" && trx){
+    paymentStatus="verification_pending";
+    paymentText="TrxID জমা হয়েছে — পেমেন্ট যাচাই বাকি";
+  }
+
+  if(method==="cod"){
+    paymentStatus="cod_contact_required";
+    paymentText="COD — WhatsApp-এ যোগাযোগ প্রয়োজন";
+  }
+
+  const orderData={
+    customer_name:name,
+    customer_phone:phone,
+    division:division,
+    district:district,
+    upazila:upazila,
+    union_name:union,
+    full_address:address,
+    items:orderItems,
+    subtotal:subtotal,
+    delivery_fee:deliveryFee,
+    total:total,
+    payment_method:method,
+    payment_status:paymentStatus,
+    bkash_sender:sender||null,
+    trx_id:trx||null,
+    order_status:"নতুন অর্ডার"
+  };
+
+  const itemText=orderItems.map(item=>
+    `• ${item.name} × ${item.quantity} = ${money(item.line_total)}`
+  ).join("\n");
+
+  let paymentLine="";
+
+  if(method==="bkash"){
+
+    paymentLine=
+`পেমেন্ট: বিকাশ
+বিকাশ নম্বর: ${BKASH_NUMBER}
+প্রেরকের নম্বর: ${sender||"দেওয়া হয়নি"}
+TrxID: ${trx||"দেওয়া হয়নি"}
+পেমেন্ট অবস্থা: ${paymentText}
+ডেলিভারি চার্জ: ${money(deliveryFee)}`;
+
+  }else{
+
+    paymentLine=
+`পেমেন্ট: ক্যাশ অন ডেলিভারি (COD)
+পেমেন্ট অবস্থা: COD — টাকা এখনো পরিশোধ করা হয়নি
+কাস্টমারকে WhatsApp-এ যোগাযোগ করতে হবে
+WhatsApp: 01822412757`;
+  }
+
+  const message=
+`🛍️ নতুন অর্ডার রিকোয়েস্ট — ZIAM MART
+
+👤 নাম: ${name}
+📞 ফোন: ${phone}
+
+📍 বিভাগ: ${division}
+📍 জেলা: ${district}
+📍 উপজেলা: ${upazila}
+📍 ইউনিয়ন: ${union}
+🏠 ঠিকানা: ${address}
+
+🛒 পণ্যের বিবরণ
+${itemText}
+
+পণ্যের মূল্য: ${money(subtotal)}
+ডেলিভারি চার্জ: ${money(deliveryFee)}
+সর্বমোট: ${money(total)}
+
+💳 পেমেন্ট তথ্য
+${paymentLine}
+
+অর্ডার স্ট্যাটাস: নতুন অর্ডার
+
+দয়া করে অর্ডারটি যাচাই করে কাস্টমারের সাথে যোগাযোগ করুন।
+
+ZIAM MART — QUALITY • TRUST • SERVICE`;
+
+  // SMS
+  const customerMessage=
+`প্রিয় ${name}, ZIAM MART-এ আপনার অর্ডার রিকোয়েস্ট গ্রহণ করা হয়েছে। অর্ডার নিশ্চিত করতে আমাদের পক্ষ থেকে যোগাযোগ করা হবে।`;
+
+  byId("adminSms").href=
+    "sms:"+SHOP_SMS_NUMBER+
+    "?body="+encodeURIComponent(message);
+
+  byId("customerSms").href=
+    "sms:"+phone+
+    "?body="+encodeURIComponent(customerMessage);
+
+  // WhatsApp-এর জন্য আগে উইন্ডো খোলা
+  const waWindow=window.open("about:blank","_blank");
+
+  let saved=false;
+  let saveError=null;
+
+  // Supabase-এ অর্ডার সংরক্ষণ
+  if(db){
+
+    const {error}=await db.from("orders").insert(orderData);
+
+    if(error){
+      console.error(error);
+      saveError=error;
+    }else{
+      saved=true;
+    }
+
+  }else{
+    saveError=new Error("Supabase সংযোগ নেই");
+  }
+
+  // WhatsApp-এ সব তথ্য পাঠানোর জন্য তৈরি
+  const waURL=
+    "https://wa.me/"+WHATSAPP_NUMBER+
+    "?text="+encodeURIComponent(message);
+
+  if(waWindow){
+    waWindow.location.href=waURL;
+  }else{
+    window.location.href=waURL;
+  }
+
+  if(method==="bkash"){
+    byId("confirmationPayment").textContent=
+      "পেমেন্ট অবস্থা: "+paymentText;
+  }else{
+    byId("confirmationPayment").textContent=
+      "COD অর্ডার: WhatsApp-এ যোগাযোগ করে নিশ্চিত করুন।";
+  }
+
+  showSection("confirmationSection");
+
+  if(!saved){
+    alert(
+      "WhatsApp মেসেজ তৈরি হয়েছে। তবে ডাটাবেসে অর্ডার সংরক্ষণ হয়নি। Supabase সংযোগ ও অনুমতি পরীক্ষা করুন।"
+    );
+  }
+
+  // কার্ট খালি
+  cart=[];
+  updateCartCount();
+});
+
+// ============================================
+// ADMIN LOGIN
+// ============================================
+
+async function adminLogin(){
+
+  if(!db)
+    return alert("আগে Supabase URL ও anon key বসান।");
+
+  const email=byId("adminEmail").value.trim();
+  const password=byId("adminPassword").value;
+
+  if(!email||!password)
+    return alert("ইমেইল ও পাসওয়ার্ড লিখুন।");
+
+  byId("loginMessage").textContent="লগইন হচ্ছে...";
+
+  const {data,error}=await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    byId("loginMessage").textContent=
+      "লগইন হয়নি: "+error.message;
+    return;
+  }
+
+  const {data:admin,error:adminError}=await db
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id",data.user.id)
+    .maybeSingle();
+
+  if(adminError||!admin){
+    await db.auth.signOut();
+    byId("loginMessage").textContent=
+      "এই অ্যাকাউন্টটি অ্যাডমিন হিসেবে অনুমোদিত নয়।";
+    return;
+  }
+
+  currentAdmin=data.user;
+  openAdminDashboard();
+}
+
+async function checkAdminSession(){
+
+  if(!db)return;
+
+  const {data}=await db.auth.getSession();
+
+  if(!data.session){
+    byId("adminLoginBox").classList.remove("hidden");
+    byId("adminDashboard").classList.add("hidden");
+    return;
+  }
+
+  const user=data.session.user;
+
+  const {data:admin,error}=await db
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+  if(error||!admin){
+    byId("adminLoginBox").classList.remove("hidden");
+    byId("adminDashboard").classList.add("hidden");
+    return;
+  }
+
+  currentAdmin=user;
+  openAdminDashboard();
+}
+
+function openAdminDashboard(){
+
+  byId("adminLoginBox").classList.add("hidden");
+  byId("adminDashboard").classList.remove("hidden");
+  byId("adminIdentity").textContent=currentAdmin.email;
+
+  loadAdminProducts();
+  loadAdminOrders();
+}
+
+async function adminLogout(){
+
+  if(db)await db.auth.signOut();
+
+  currentAdmin=null;
+
+  byId("adminLoginBox").classList.remove("hidden");
+  byId("adminDashboard").classList.add("hidden");
+
+  alert("অ্যাডমিন লগআউট হয়েছে।");
+}
+
+// ============================================
+// ADMIN PRODUCT MANAGEMENT
+// ============================================
+
+async function addProduct(){
+
+  if(!db||!currentAdmin)
+    return alert("প্রথমে অ্যাডমিন লগইন করুন।");
+
+  const name=byId("newProductName").value.trim();
+  const price=Number(byId("newProductPrice").value);
+  const stock=Number(byId("newProductStock").value);
+  const image=byId("newProductImage").value.trim();
+  const category=byId("newProductCategory").value.trim();
+  const description=byId("newProductDescription").value.trim();
+
+  if(
+    !name||
+    !Number.isFinite(price)||price<0||
+    !Number.isInteger(stock)||stock<0
+  ){
+    return alert("পণ্যের নাম, সঠিক দাম ও স্টক দিন।");
+  }
+
+  const {error}=await db.from("products").insert({
+    name,
+    price,
+    stock,
+    image,
+    category,
+    description,
+    active:true
+  });
+
+  if(error){
+    alert("পণ্য যোগ হয়নি: "+error.message);
+    return;
+  }
+
+  [
+    "newProductName",
+    "newProductPrice",
+    "newProductStock",
+    "newProductImage",
+    "newProductCategory",
+    "newProductDescription"
+  ].forEach(id=>byId(id).value="");
+
+  alert("নতুন পণ্য যোগ হয়েছে।");
+
+  await loadProducts();
+  await loadAdminProducts();
+}
+
 async function loadAdminProducts(){
- const {data,error}=await supabase.from("products").select("*").order("created_at",{ascending:false});
- if(error){$("adminProducts").textContent=error.message;return}
- $("adminProducts").innerHTML=(data||[]).map(p=>`<div class="cartline"><div><b>${esc(p.name)}</b><div class="tiny">${money(p.price)} · ${esc(p.category||"")}</div></div><div class="row" style="flex:0 0 auto"><button class="ghost" onclick='editProduct(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Edit</button><button class="ghost" onclick="deleteProduct('${p.id}')">Delete</button></div></div>`).join("")||"এখনো পণ্য নেই।"
+
+  if(!db||!currentAdmin)return;
+
+  const {data,error}=await db
+    .from("products")
+    .select("*")
+    .order("id",{ascending:false});
+
+  if(error){
+    alert("পণ্য লোড হয়নি: "+error.message);
+    return;
+  }
+
+  byId("adminProductList").innerHTML=(data||[]).map(p=>`
+    <tr>
+      <td>${safe(p.name)}</td>
+      <td>${money(p.price)}</td>
+      <td>${p.stock}</td>
+      <td>
+        <button onclick="editProduct(${Number(p.id)})">Edit</button>
+        <button onclick="deleteProduct(${Number(p.id)})">Delete</button>
+      </td>
+    </tr>
+  `).join("");
 }
-function editProduct(p){$("editProductId").value=p.id;$("pName").value=p.name;$("pPrice").value=p.price;$("pCategory").value=p.category||"";$("pImage").value=p.image_url||"";$("pDescription").value=p.description||"";scrollToId("admin")}
-async function deleteProduct(id){if(!confirm("এই পণ্যটি মুছে ফেলবেন?"))return;const {error}=await supabase.from("products").delete().eq("id",id);if(error)return toast(error.message);await loadProducts();loadAdminProducts()}
-async function loadOrders(){
- const {data,error}=await supabase.from("orders").select("*").order("created_at",{ascending:false}).limit(100);
- if(error){$("ordersList").textContent="অর্ডার পড়া যায়নি: "+error.message;return}
- $("ordersList").innerHTML=(data||[]).map(o=>`<div class="adminOrder"><div class="row"><b>${esc(o.customer_name)} — ${money(o.total)}</b><span class="pill">${esc(o.status||"নতুন")}</span></div><p class="tiny">${esc(o.customer_phone)} · ${esc(o.division||"")}, ${esc(o.district||"")}, ${esc(o.upazila||"")}</p><p class="tiny">${esc(o.full_address||"")}</p><p class="tiny">ডেলিভারি অগ্রিম: ${money(o.delivery_fee)} · পণ্যের বাকি: ${money(o.product_due)} · TrxID: ${esc(o.bkash_trxid)}</p><pre class="tiny" style="white-space:pre-wrap">${esc(JSON.stringify(o.items||[],null,2))}</pre><select onchange="setOrderStatus('${o.id}',this.value)"><option ${o.status==="নতুন"?"selected":""}>নতুন</option><option ${o.status==="যাচাই হচ্ছে"?"selected":""}>যাচাই হচ্ছে</option><option ${o.status==="নিশ্চিত"?"selected":""}>নিশ্চিত</option><option ${o.status==="পাঠানো হয়েছে"?"selected":""}>পাঠানো হয়েছে</option><option ${o.status==="সম্পন্ন"?"selected":""}>সম্পন্ন</option><option ${o.status==="বাতিল"?"selected":""}>বাতিল</option></select></div>`).join("")||'<p class="muted">এখনো কোনো অর্ডার নেই।</p>'
+
+async function editProduct(id){
+
+  if(!db||!currentAdmin)return;
+
+  let product=products.find(x=>Number(x.id)===Number(id));
+
+  if(!product){
+    const {data}=await db.from("products")
+      .select("*").eq("id",id).single();
+    product=data;
+  }
+
+  if(!product)return alert("পণ্য পাওয়া যায়নি।");
+
+  const name=prompt("পণ্যের নাম:",product.name);
+  if(name===null)return;
+
+  const price=prompt("পণ্যের দাম:",product.price);
+  if(price===null)return;
+
+  const stock=prompt("স্টকের পরিমাণ:",product.stock);
+  if(stock===null)return;
+
+  const image=prompt("ছবির URL:",product.image||"");
+  if(image===null)return;
+
+  if(!name.trim()||
+     !Number.isFinite(Number(price))||Number(price)<0||
+     !Number.isInteger(Number(stock))||Number(stock)<0){
+    return alert("সঠিক পণ্যের তথ্য দিন।");
+  }
+
+  const {error}=await db.from("products").update({
+    name:name.trim(),
+    price:Number(price),
+    stock:Number(stock),
+    image:image.trim()
+  }).eq("id",id);
+
+  if(error){
+    alert("আপডেট হয়নি: "+error.message);
+    return;
+  }
+
+  alert("পণ্যের তথ্য আপডেট হয়েছে।");
+
+  await loadProducts();
+  await loadAdminProducts();
 }
-async function setOrderStatus(id,status){const {error}=await supabase.from("orders").update({status}).eq("id",id);if(error)toast(error.message);else toast("অর্ডারের অবস্থা আপডেট হয়েছে")}
-async function init(){
- $("year").textContent=new Date().getFullYear();$("bkashDisplay").textContent=CONFIG.BKASH_NUMBER;
- if(window.supabase?.createClient&&CONFIG.SUPABASE_URL.startsWith("https://")&&!CONFIG.SUPABASE_URL.includes("PASTE_")&&!CONFIG.SUPABASE_ANON_KEY.includes("PASTE_")){
-  supabase=window.supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);
-  const {data}=await supabase.auth.getSession();session=data.session;
-  supabase.auth.onAuthStateChange((_event,s)=>{session=s;showAdmin()});
- }
- await Promise.all([loadGeo(),loadProducts()]);renderCart();showAdmin();
+
+async function deleteProduct(id){
+
+  if(!db||!currentAdmin)return;
+
+  if(!confirm("আপনি কি এই পণ্যটি মুছে ফেলতে চান?"))return;
+
+  const {error}=await db.from("products")
+    .delete().eq("id",id);
+
+  if(error){
+    alert("পণ্য মুছে ফেলা যায়নি: "+error.message);
+    return;
+  }
+
+  alert("পণ্য মুছে ফেলা হয়েছে।");
+
+  await loadProducts();
+  await loadAdminProducts();
 }
-init();
+
+// ============================================
+// ADMIN ORDER MANAGEMENT
+// ============================================
+
+async function loadAdminOrders(){
+
+  if(!db||!currentAdmin)return;
+
+  const {data,error}=await db
+    .from("orders")
+    .select("*")
+    .order("created_at",{ascending:false})
+    .limit(100);
+
+  if(error){
+    alert("অর্ডার লোড হয়নি: "+error.message);
+    return;
+  }
+
+  byId("adminOrderList").innerHTML=(data||[]).map(o=>`
+
+    <tr>
+      <td>
+        <span class="badge">
+          ${safe(String(o.id).slice(0,8))}
+        </span>
+        <br>
+        <span class="small">
+          ${o.created_at
+            ?new Date(o.created_at).toLocaleString("bn-BD")
+            :""}
+        </span>
+      </td>
+
+      <td>
+        <b>${safe(o.customer_name)}</b><br>
+        ${safe(o.customer_phone)}<br>
+        <span class="small">
+          ${safe(o.district||"")}, ${safe(o.upazila||"")}
+        </span>
+      </td>
+
+      <td>${money(o.total)}</td>
+
+      <td>
+        ${safe(o.payment_method||"")}<br>
+        <span class="small">
+          ${safe(o.payment_status||"")}
+        </span>
+        <br>
+        TrxID: ${safe(o.trx_id||"নেই")}
+      </td>
+
+      <td>
+        <select id="status-${safe(o.id)}">
+          ${[
+            "নতুন অর্ডার",
+            "যাচাই চলছে",
+            "অর্ডার নিশ্চিত",
+            "প্রস্তুত হচ্ছে",
+            "ডেলিভারির জন্য পাঠানো হয়েছে",
+            "সম্পন্ন",
+            "বাতিল"
+          ].map(s=>`
+            <option value="${safe(s)}"
+              ${o.order_status===s?"selected":""}>
+              ${safe(s)}
+            </option>
+          `).join("")}
+        </select>
+
+        <select id="payment-${safe(o.id)}">
+          ${[
+            ["pending","পেমেন্ট বাকি"],
+            ["verification_pending","TrxID যাচাই বাকি"],
+            ["paid","পেমেন্ট যাচাই হয়েছে"],
+            ["cod_contact_required","COD যোগাযোগ প্রয়োজন"],
+            ["cod_due","COD — ডেলিভারিতে পরিশোধ"]
+          ].map(([v,t])=>`
+            <option value="${v}"
+              ${o.payment_status===v?"selected":""}>
+              ${t}
+            </option>
+          `).join("")}
+        </select>
+      </td>
+
+      <td>
+        <button class="gold"
+          onclick="updateOrder('${safe(o.id)}')">
+          সংরক্ষণ
+        </button>
+        <button onclick="showOrderDetails('${safe(o.id)}')">
+          বিস্তারিত
+        </button>
+      </td>
+    </tr>
+
+  `).join("");
+}
+
+async function updateOrder(id){
+
+  if(!db||!currentAdmin)return;
+
+  const status=byId("status-"+id).value;
+  const payment=byId("payment-"+id).value;
+
+  const {error}=await db.from("orders").update({
+    order_status:status,
+    payment_status:payment
+  }).eq("id",id);
+
+  if(error){
+    alert("আপডেট হয়নি: "+error.message);
+    return;
+  }
+
+  alert("অর্ডারের তথ্য আপডেট হয়েছে।");
+  loadAdminOrders();
+}
+
+async function showOrderDetails(id){
+
+  if(!db||!currentAdmin)return;
+
+  const {data,error}=await db.from("orders")
+    .select("*").eq("id",id).single();
+
+  if(error||!data)
+    return alert("অর্ডার পাওয়া যায়নি।");
+
+  const itemText=(data.items||[]).map(item=>
+    `${item.name} × ${item.quantity} = ${money(item.line_total)}`
+  ).join("\n");
+
+  alert(
+`অর্ডার নম্বর: ${data.id}
+
+নাম: ${data.customer_name}
+ফোন: ${data.customer_phone}
+
+ঠিকানা:
+${data.division}
+${data.district}
+${data.upazila}
+${data.union_name}
+${data.full_address}
+
+পণ্য:
+${itemText}
+
+পণ্যের মূল্য: ${money(data.subtotal)}
+ডেলিভারি চার্জ: ${money(data.delivery_fee)}
+সর্বমোট: ${money(data.total)}
+
+পেমেন্ট পদ্ধতি: ${data.payment_method}
+পেমেন্ট অবস্থা: ${data.payment_status}
+বিকাশ প্রেরকের নম্বর: ${data.bkash_sender||"নেই"}
+TrxID: ${data.trx_id||"নেই"}
+
+অর্ডার স্ট্যাটাস: ${data.order_status}`
+  );
+}
+
+// ============================================
+// START
+// ============================================
+
+renderProducts();
+loadProducts();
+loadLocations();
+updateCartCount();
+
 </script>
 </body>
 </html>
